@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {selectSeats, fetchSeats} from './seatsSlice'
+import {selectSeats, fetchSeats, reservationAdded} from './seatsSlice'
 import {Row, Col,} from 'antd'
 import styled from 'styled-components'
 import {SeatItem} from './SeatItem'
+import {SeatsFooter} from "./SeatsFooter";
 
-export default function SeatsView({numberOfSeats, nextToEachOther,}) {
+export default function SeatsView({numberOfSeats, nextToEachOther, showSummary}) {
     const dispatch = useDispatch()
     const seats = useSelector(selectSeats)
 
@@ -77,6 +78,12 @@ export default function SeatsView({numberOfSeats, nextToEachOther,}) {
         }
     }, [seatsStatus])
 
+    const handleSubmit = () => {
+        if (selectedSeats.length > 0) {
+            dispatch(reservationAdded(selectedSeats))
+            showSummary(selectedSeats);
+        }
+    }
     return (
         <Wrapper>
             {
@@ -97,6 +104,7 @@ export default function SeatsView({numberOfSeats, nextToEachOther,}) {
                     </Row>
                 })
             }
+            <SeatsFooter handleSubmit={handleSubmit}/>
         </Wrapper>
     )
 }
