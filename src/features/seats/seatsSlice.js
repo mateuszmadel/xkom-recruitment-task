@@ -14,14 +14,14 @@ export const seatsSlice = createSlice({
     initialState,
     reducers: {
         reservationAdded(state, action) {
-            action.payload.forEach((seat)=>{
-                const seatToReserve=state.items.find((item) => item.id === seat.id)
+            action.payload.forEach((seat) => {
+                const seatToReserve = state.items.find((item) => item.id === seat.id)
                 seatToReserve.reserved = true;
             })
         },
     },
     extraReducers: {
-        [fetchSeats.pending]: (state, action) => {
+        [fetchSeats.pending]: (state) => {
             state.status = 'loading'
         },
         [fetchSeats.fulfilled]: (state, action) => {
@@ -34,6 +34,6 @@ export const seatsSlice = createSlice({
         }
     }
 })
-export const { reservationAdded } =seatsSlice.actions;
+export const {reservationAdded} = seatsSlice.actions;
 export default seatsSlice.reducer
 export const selectSeats = (state) => state.seats;
